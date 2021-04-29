@@ -1,68 +1,101 @@
 import { useMemo, useState } from "react"
-import { TextField, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+    TextField,
+    TableContainer,
+    Table,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody,
+    Grid,
+    Paper,
+    AppBar,
+    Typography
+} from '@material-ui/core';
 
 function Home() {
-    const [proventos, setProventos ] = useState(0);
-    const [horas, setHoras ] = useState(190);
+    const [proventos, setProventos] = useState();
+    const [complementares, setComplementares] = useState();
+    const [horas, setHoras] = useState(190);
     const [multiplicador, setMultiplicador] = useState(2.5);
-    const [complementares, setComplementares] = useState(0);
 
     const valorHora = useMemo(() => {
-        return (proventos / horas) * multiplicador
+        const value = (proventos / horas) * multiplicador
+        return value || 0;
     }, [proventos, horas, multiplicador])
 
     const totalComplementares = useMemo(() => {
-        return valorHora * complementares
+        const value = valorHora * complementares
+        return value || 0;
     }, [valorHora, complementares])
 
     const totalGeral = useMemo(() => {
-        return totalComplementares + proventos
+        const value = parseFloat(totalComplementares) + parseFloat(proventos)
+        return value || 0;
     }, [totalComplementares, proventos])
 
+    const classes = useStyles();
+
     return (
-        <div>
-            <h1>Home</h1>
-            <form noValidate autoComplete="off">
-                <TextField
-                    onChange={(e) => setProventos(e.target.value)}
-                    value={proventos}
-                    label="Proventos"
-                    type="number" />
+        <div className={classes.root}>
+            <AppBar position="static">
+                <Typography variant="h6" className={classes.title}>
+                    Horas Complementares
+                </Typography>
+            </AppBar>
 
-                <TextField
-                    onChange={(e) => setComplementares(e.target.value)}
-                    value={complementares}
-                    label="Horas complementares"
-                    type="number" />
-
-                <TextField
-                    onChange={(e) => setHoras(e.target.value)}
-                    value={horas}
-                    label="Carga horária"
-                    type="number" />
-
-                <TextField
-                    onChange={(e) => setMultiplicador(e.target.value)}
-                    value={multiplicador}
-                    label="Multiplicador"
-                    type="number" />
+            <form className={classes.form} noValidate autoComplete="off">
+                <Grid container direction="row" justify="center" alignItems="center" spacing={2}>
+                    <Grid item md={6} xs={12}>
+                        <TextField
+                            onChange={(e) => setProventos(e.target.value)}
+                            value={proventos}
+                            fullWidth
+                            label="Proventos"
+                            type="number" />
+                    </Grid>
+                    <Grid item md={6} xs={12}>
+                        <TextField
+                            onChange={(e) => setComplementares(e.target.value)}
+                            value={complementares}
+                            fullWidth
+                            label="Horas complementares"
+                            type="number" />
+                    </Grid>
+                    <Grid item md={6} xs={12}>
+                        <TextField
+                            onChange={(e) => setHoras(e.target.value)}
+                            value={horas}
+                            fullWidth
+                            label="Carga horária"
+                            type="number" />
+                    </Grid>
+                    <Grid item md={6} xs={12}>
+                        <TextField
+                            onChange={(e) => setMultiplicador(e.target.value)}
+                            value={multiplicador}
+                            fullWidth
+                            label="Multiplicador"
+                            type="number" />
+                    </Grid>
+                </Grid>
 
             </form>
             <TableContainer component={Paper}>
-                <Table aria-label="simple table">
+                <Table className={classes.table}>
                     <TableHead>
                         <TableRow>
-                            <TableCell component="th">Valor da hora</TableCell>
-                            <TableCell component="th">Valor complementares</TableCell>
-                            <TableCell component="th">Total a receber</TableCell>
+                            <TableCell className={classes.thead}>Valor da hora</TableCell>
+                            <TableCell className={classes.thead}>Valor complementares</TableCell>
+                            <TableCell className={classes.thead}>Total a receber</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         <TableRow>
-                            <TableCell>{valorHora}</TableCell>
-                            <TableCell>{totalComplementares}</TableCell>
-                            <TableCell>{totalGeral}</TableCell>
+                            <TableCell>R$: {valorHora.toFixed(2)}</TableCell>
+                            <TableCell>R$: {totalComplementares.toFixed(2)}</TableCell>
+                            <TableCell>R$: {totalGeral.toFixed(2)}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
@@ -71,5 +104,26 @@ function Home() {
     )
 }
 
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
+    form: {
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+    },
+    title: {
+        flexGrow: 1,
+        alignSelf: 'flex-start',
+    },
+    table: {
+        minWidth: 650,
+    },
+    thead: {
+        fontWeight: "bold"
+    }
+}));
 
 export default Home
