@@ -18,10 +18,10 @@
 }
 
 [data-theme="dark"] {
-    --white: #121212;
+    --white: #23232D;
 
-    --gray-50: #212121;
-    --gray-100: #44475a;
+    --gray-50: #121216;
+    --gray-100: #3d3f50;
     --gray-200: #CCC;
     --gray-500: #E1E1E6;
     --gray-800: #FEFEFE;
@@ -110,6 +110,21 @@ h1, h2, h3, h4, h5, h6 {
     fill: var(--purple-500);
 }
 
+.app .example-section {
+    margin-bottom: 2rem;
+}
+
+.app .example-section div {
+    margin-top: 0.5rem;
+}
+
+.app .example-section div p {
+    font-family: Lexend, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--gray-200);
+}
+
 .app .form section {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -125,7 +140,6 @@ h1, h2, h3, h4, h5, h6 {
 .app .form section label {
     display: flex;
     flex-direction: column;
-    font-weight: 500;
     font: 500 0.85rem Lexend, sans-serif;
 }
 
@@ -137,7 +151,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     border-radius: 4px;
 
-    background-color: var(--gray-50);
+    background-color: var(--white);
 }
 
 .app .form section label input:focus {
@@ -185,6 +199,10 @@ input[type=number] {
 }
 
 @media (max-width: 720px) {
+    .wrapper {
+        margin: 0 2rem;
+    }
+
     .app header h1 {
         font-size: 1.6rem;
     }

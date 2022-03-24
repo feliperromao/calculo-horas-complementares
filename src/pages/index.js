@@ -4,8 +4,8 @@ import Head from 'next/head'
 import ThemeToggle from '../components/ThemeToggle'
 
 function Home() {
-    const [proventos, setProventos] = useState();
-    const [complementares, setComplementares] = useState();
+    const [proventos, setProventos] = useState('');
+    const [complementares, setComplementares] = useState('');
     const [horas, setHoras] = useState(190);
     const [multiplicador, setMultiplicador] = useState(2.5);
 
@@ -15,8 +15,17 @@ function Home() {
     }, [proventos, horas, multiplicador])
 
     const totalComplementares = useMemo(() => {
-        const value = valorHora * complementares
-        return value || 0;
+        let value = 0
+
+        if (complementares % 1 === 0) {
+            value = valorHora * complementares
+        } else {
+            const complementaresFloat = parseFloat(complementares).toFixed(2)
+            const [horas, minutos] = complementaresFloat.split('.')
+            value = (valorHora * horas) + (valorHora * minutos / 60)
+        }
+    
+        return value || 0
     }, [valorHora, complementares])
 
     const totalGeral = useMemo(() => {
@@ -38,6 +47,14 @@ function Home() {
 
                     <ThemeToggle />
                 </header>
+
+                <section className="example-section">
+                    <h4>Modo de uso</h4>
+                    <div>
+                        <p><strong>Proventos:</strong> R$ 1.500 = 1500</p>
+                        <p><strong>Horas complementares:</strong> 2 horas e 43 minutos = 2,43</p>
+                    </div>
+                </section>
 
                 <form noValidate autoComplete="off" className="form">
                     <section>
